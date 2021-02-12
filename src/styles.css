@@ -1,4 +1,5 @@
 body{
     background-image: url("./assets/images/yardweather.png");
     background-size: cover;
+    background-repeat: no-repeat;
 }
