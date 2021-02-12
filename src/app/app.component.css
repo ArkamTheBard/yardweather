@@ -1,0 +1,31 @@
+h1{
+    font-size: xx-large;
+}
+
+.main-body{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    border: 5px;
+    background-color: aliceblue;
+    border-color: gray;
+    border-style: solid;
+    width: 400px;
+    margin: auto;
+}
+
+.button-wrapper{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.weather-body{
+    width: 500px;
+    justify-content: center;
+    margin: auto;
+    border: 5px;
+    border-style: solid;
+    border-color: salmon;
+    background-color:palevioletred;
+}
