@@ -105,8 +105,7 @@
             </div>
 
             <div class="forecast-grid">
-              <div class="forecast-day" *ngFor="let day of forecastDays; let isFirst = first"
-                [class.forecast-day-current]="isFirst">
+              <div class="forecast-day" *ngFor="let day of forecastDays">
                 <p class="forecast-day-label mb-2">{{ day.dayLabel }}</p>
                 <img
                   class="forecast-icon"
