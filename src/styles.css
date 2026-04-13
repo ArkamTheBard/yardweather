@@ -1,5 +1,10 @@
-body{
-    background-image: url("./assets/images/yardweather.png");
-    background-size: auto;
-    background-repeat: no-repeat;
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #0b1720;
 }

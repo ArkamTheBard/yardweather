@@ -1,22 +1,128 @@
-<div class="main-body">
-  <h1 style="font: Inconsolata;">>_Yard Weather
-    <br />
-    <span style="font-size: small;">Quick weather fetch without any of the cookies/location saving</span>
-  </h1>
-  <br />
+<div class="app-shell">
+  <div class="background-slice slice-left" aria-hidden="true"></div>
+  <div class="background-slice slice-center" aria-hidden="true"></div>
+  <div class="background-slice slice-right" aria-hidden="true"></div>
+  <div class="background-overlay" aria-hidden="true"></div>
+
+  <main class="container py-4 py-md-5 position-relative">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10 col-xl-9">
+        <section class="card hero-card shadow-lg border-0 mb-4">
+          <div class="card-body p-4 p-md-5 text-center">
+            <p class="hero-kicker mb-2">
+              <span class="terminal-prefix">&gt;_ </span>
+              <span class="terminal-kicker-wrap">
+                <span class="terminal-kicker">{{ terminalText }}</span>
+                <span class="terminal-caret" aria-hidden="true"></span>
+              </span>
+            </p>
+            <h1 class="display-5 fw-semibold mb-3">Fast weather checks for your backyard plans</h1>
+            <p class="lead mb-0">
+              Quick ZIP code lookup without cookie popups, location prompts, or clutter.
+            </p>
+          </div>
+        </section>
+
+        <section class="card search-card shadow border-0 mb-4">
+          <div class="card-body p-3 p-md-4">
+            <label for="zip-input" class="form-label fw-semibold text-uppercase small tracking-label">
+              Enter a US ZIP code
+            </label>
+            <div class="input-group input-group-lg search-group">
+              <input
+                id="zip-input"
+                type="text"
+                class="form-control"
+                placeholder="63110"
+                #testBox
+                (keyup.enter)="getWeatherAPI(testBox.value, 'us')"
+              />
+              <button id="test" class="btn btn-warning px-4 fw-semibold" type="button"
+                (click)="getWeatherAPI(testBox.value,'us')">
+                Submit
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="card weather-card shadow-lg border-0" *ngIf="testClick">
+          <div class="card-body p-4 p-md-5">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+              <div>
+                <p class="text-uppercase small fw-semibold weather-label mb-1">Current Conditions</p>
+                <h2 class="h1 mb-0">{{userLocation.name}}</h2>
+              </div>
+              <div class="weather-icon-wrap">
+                <img
+                  class="weather-icon"
+                  [src]="'https://openweathermap.org/img/wn/' + userLocation.weather.icon + '@2x.png'"
+                  [alt]="userLocation.weather.main"
+                />
+              </div>
+            </div>
+
+            <div class="weather-headline mb-4">
+              <span class="headline-temp">{{currentTemp}}°F</span>
+              <span class="headline-summary">{{userLocation.weather.main}}</span>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-12 col-sm-6">
+                <div class="metric-card">
+                  <span class="metric-label">Feels Like</span>
+                  <span class="metric-value">{{currentFeelsLike}}°F</span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="metric-card">
+                  <span class="metric-label">Humidity</span>
+                  <span class="metric-value">{{userLocation.main.humidity}}%</span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="metric-card">
+                  <span class="metric-label">Today's Max</span>
+                  <span class="metric-value">{{currentTempMax}}°F</span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="metric-card">
+                  <span class="metric-label">Today's Min</span>
+                  <span class="metric-value">{{currentTempMin}}°F</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card forecast-card shadow-lg border-0 mt-4" *ngIf="forecastDays.length">
+          <div class="card-body p-4 p-md-5">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+              <div>
+                <p class="text-uppercase small fw-semibold weather-label mb-1">Five-Day Forecast</p>
+                <h3 class="h2 mb-0">Coming Up</h3>
+              </div>
+            </div>
+
+            <div class="forecast-grid">
+              <div class="forecast-day" *ngFor="let day of forecastDays; let isFirst = first"
+                [class.forecast-day-current]="isFirst">
+                <p class="forecast-day-label mb-2">{{ day.dayLabel }}</p>
+                <img
+                  class="forecast-icon"
+                  [src]="'https://openweathermap.org/img/wn/' + day.icon + '@2x.png'"
+                  [alt]="day.summary"
+                />
+                <p class="forecast-summary mb-2">{{ day.summary }}</p>
+                <p class="forecast-temps mb-0">
+                  <span>{{ day.high }}°</span>
+                  <span class="forecast-low">{{ day.low }}°</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
 </div>
-<br/>
-<br/>
-<div class="button-wrapper">
-  <input type="text" placeholder="Enter a zip code (US only)" #testBox
-    (keyup.enter)="getWeatherAPI(testBox.value, 'us')">
-  <button id="test" (click)="getWeatherAPI(testBox.value,'us')">Submit</button>
-</div>
-<pre>
-<div class="weather-body" *ngIf="testClick">
-  <p style="text-align: center;">City: {{userLocation.name}}</p>
-  <p>Current weather: {{userLocation.weather.main}} <img [src]="'http://openweathermap.org/img/wn/'+ userLocation.weather.icon + '@2x.png'" ALIGN=Bottom></p>
-  <p>Current temperature: {{currentTemp}}°F   Current humidity: {{userLocation.main.humidity}}%</p>
-  <p>Feels like: {{currentFeelsLike}}°F   Today's max: {{currentTempMax}}°F   Today's min: {{currentTempMin}}°F</p>
-</div>
-</pre>
